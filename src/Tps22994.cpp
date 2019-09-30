@@ -31,14 +31,37 @@ void tps22994::write_ctrl_reg(uint8_t value)
 	write_byte(TPS22994_REG_CONTROL, value);
 }
 
+void tps22994::config_all_ch_to_i2c()
+{
+	write_byte(TPS22994_REG_CONTROL,0xF0);
+}
+
 uint8_t tps22994::read_ctrl_reg()
 {
 	return read_byte(TPS22994_REG_CONTROL);
 }
 
+uint8_t tps22994::read_mode_reg(uint8_t reg)//falta tranformar dec a hex, solo funciona con hex
+{
+	return read_byte(reg);
+}
+
 void tps22994::set_address(uint8_t address_)
 {
 	address = address_;
+}
+
+void tps22994::quick_discharge(uint8_t ch, uint8_t val)
+{
+	//00 110ohm  0
+	//01 490 1
+	//10 951 2
+	//11 none 3
+	uint8_t reg= read_byte(ch);
+	reg = reg >> 2;
+	reg = reg << 2;
+	reg = reg | val;
+	write_byte(ch, reg);
 }
 
 void tps22994::write_byte(uint8_t reg, uint8_t data)
@@ -52,14 +75,12 @@ void tps22994::write_byte(uint8_t reg, uint8_t data)
 
 uint8_t tps22994::read_byte(uint8_t reg)
 {
-	////uint8_t data = 0;
-	
 	Wire.begin();
 	Wire.beginTransmission(address);
 	Wire.write(reg);
 	Wire.endTransmission();
 	Wire.requestFrom(address, (byte)1);
-	int value = Wire.read();
+	uint8_t value = Wire.read();
 	Wire.endTransmission();
 	return value;
 }

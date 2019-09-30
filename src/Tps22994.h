@@ -10,6 +10,15 @@
 #define TPS22994_I2C_ADDRESS        (0xE0>>1)
 #define TPS22994_REG_CONTROL        0x05
 
+enum mode_quick_dis
+{
+res_110=0,
+res_490,
+res_951,
+high_imp
+};
+
+
 class tps22994
 {
 public:
@@ -28,10 +37,11 @@ void write_ctrl_reg(uint8_t value);
 	@brief retorna el registro de control
 	@return uint8_t 
 */
+void config_all_ch_to_i2c();
 uint8_t read_ctrl_reg();
-
+uint8_t read_mode_reg(uint8_t reg);
 void set_address(uint8_t address_);
-
+void quick_discharge(uint8_t ch, uint8_t val );
 private:
 uint8_t address= TPS22994_I2C_ADDRESS;
 //uint8_t read_reg(uint8_t address, uint8_t reg);
