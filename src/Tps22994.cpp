@@ -43,6 +43,7 @@ void tps22994::set_address(uint8_t address_)
 
 void tps22994::write_byte(uint8_t reg, uint8_t data)
 {
+	Wire.begin();
 	Wire.beginTransmission(address);
 	Wire.write(reg);
 	Wire.write(data);
@@ -52,10 +53,13 @@ void tps22994::write_byte(uint8_t reg, uint8_t data)
 uint8_t tps22994::read_byte(uint8_t reg)
 {
 	////uint8_t data = 0;
-
+	
+	Wire.begin();
 	Wire.beginTransmission(address);
 	Wire.write(reg);
 	Wire.endTransmission();
-	Wire.requestFrom(reg, (byte)1);
-	return Wire.read();
+	Wire.requestFrom(address, (byte)1);
+	int value = Wire.read();
+	Wire.endTransmission();
+	return value;
 }
