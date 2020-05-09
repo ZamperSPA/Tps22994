@@ -26,6 +26,15 @@ void tps22994::channel_toggle(uint8_t channel)
 	write_byte(TPS22994_REG_CONTROL, ctrl_reg);
 }
 
+void tps22994::config_all_quick_dis(uint8_t val)
+{
+	for (int i = 0x00; i < 0x04; i++)
+	{
+		quick_discharge(i, val);
+	}
+
+}
+
 void tps22994::write_ctrl_reg(uint8_t value)
 {
 	write_byte(TPS22994_REG_CONTROL, value);

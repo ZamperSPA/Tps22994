@@ -31,7 +31,7 @@ void channel_on(uint8_t channel);
 void channel_toggle(uint8_t channel);
 //void channel_toggle(uint8_t address, uint8_t channel);
 
-
+void config_all_quick_dis(uint8_t val= high_imp);
 void write_ctrl_reg(uint8_t value);
 /*!
 	@brief retorna el registro de control
